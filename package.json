@@ -1,7 +1,7 @@
 {
-  "name": "vpn-manager",
+  "name": "aliraad-website",
   "version": "1.0.0",
-  "description": "VPN Management System with React frontend and Node.js backend",
+  "description": "Ali Raad Website with React frontend and Node.js backend",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "cd server && npm run dev",
@@ -13,7 +13,7 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "keywords": ["vpn", "management", "react", "nodejs"],
+  "keywords": ["website", "portfolio", "react", "nodejs"],
   "author": "Ali Raad",
   "license": "MIT"
 }

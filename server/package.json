@@ -1,6 +1,6 @@
 
 {
-  "name": "vpn-mgr-server",
+  "name": "aliraad-website-server",
   "version": "0.1.0",
   "type": "module",
   "main": "src/index.js",

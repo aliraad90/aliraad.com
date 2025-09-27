@@ -1,22 +1,22 @@
-# VPN Management MVP
+# Ali Raad Website
 
-This is a simple MVP web app to manage VPN users for companies.
+This is Ali Raad's personal website with contact form functionality.
 
 - Backend: Node.js (Express) + MongoDB (Mongoose)
 - Frontend: React (Vite)
-- VPN Server: MikroTik CHR via SSH (RouterOS). MVP uses PPP Secrets (username/password) and provides a TXT config for clients.
+- Email: SMTP contact form functionality with Gmail integration
 
-## Features (Milestone 1)
-- Admin and Company login (JWT)
-- Admin: create/enable/disable companies
-- Auto-generate VPN credentials on company creation
-- Company: download client config (TXT) with credentials
-- Connected clients list and status (basic)
+## Features
+- Contact form with SMTP email delivery
+- Portfolio showcase
+- Services and pricing information
+- Responsive design
+- Admin dashboard for content management
 
 ## Prerequisites
 - Node.js 18+
 - MongoDB 6+
-- Access to MikroTik CHR (SSH enabled)
+- Gmail account for SMTP email functionality
 
 ## Setup
 
