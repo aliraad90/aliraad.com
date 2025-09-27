@@ -1,14 +1,15 @@
-# Ali Raad Website
+# Freelancer IT & Networking Services
 
-This is Ali Raad's personal website with contact form functionality.
+This is Ali Raad's professional website offering IT and networking services with contact form functionality.
 
 - Backend: Node.js (Express) + MongoDB (Mongoose)
 - Frontend: React (Vite)
 - Email: SMTP contact form functionality with Gmail integration
 
 ## Features
+- Professional IT & Networking Services showcase
 - Contact form with SMTP email delivery
-- Portfolio showcase
+- Portfolio and certifications display
 - Services and pricing information
 - Responsive design
 - Admin dashboard for content management

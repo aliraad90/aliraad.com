@@ -57,7 +57,7 @@ app.use(morgan('dev'));
 
 // Friendly root route to avoid 404s at /
 app.get('/', (req, res) => {
-  res.type('text').send('Ali Raad Website API is running. Try GET /api/health');
+  res.type('text').send('Freelancer IT & Networking Services API is running. Try GET /api/health');
 });
 
 app.get('/api/health', async (req, res) => {
