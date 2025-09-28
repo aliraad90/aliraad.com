@@ -2,9 +2,7 @@
   "name": "freelancer-email-api",
   "version": "1.0.0",
   "description": "Google SMTP email API for contact form",
-  "scripts": {
-    "build": "echo 'No build step required for API-only deployment'"
-  },
+  "main": "api/send-email.js",
   "dependencies": {
     "nodemailer": "^6.9.13"
   },

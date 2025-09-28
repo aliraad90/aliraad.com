@@ -1,6 +1,6 @@
 const API = import.meta.env.DEV 
   ? '/api/public' 
-  : 'https://freelancer-it-services.vercel.app/api'; // Google SMTP service URL
+  : 'https://YOUR_VERCEL_URL.vercel.app/api'; // Replace with your actual Vercel URL
 
 export async function getPlans() {
   const res = await fetch(`${API}/plans`);
