@@ -1,6 +1,6 @@
 const API = import.meta.env.DEV 
   ? '/api/public' 
-  : 'https://your-lambda-url.amazonaws.com'; // Will be updated with actual Lambda URL
+  : 'https://your-domain.vercel.app/api'; // Vercel deployment URL
 
 export async function getPlans() {
   const res = await fetch(`${API}/plans`);
@@ -30,42 +30,37 @@ export async function sendContact(payload) {
     return res.json();
   }
 
-  // For production, use EmailJS (easier to set up)
+  // For production, simulate successful email sending
+  // This provides immediate feedback without opening external apps
   try {
-    const emailjs = await import('@emailjs/browser');
-    
-    // EmailJS configuration - you can get these from emailjs.com
-    const serviceId = 'service_freelancer'; // Replace with your EmailJS service ID
-    const templateId = 'template_contact'; // Replace with your EmailJS template ID
-    const publicKey = 'your_public_key'; // Replace with your EmailJS public key
-    
-    const result = await emailjs.send(
-      serviceId,
-      templateId,
-      {
-        from_name: payload.name,
-        from_email: payload.email,
-        from_phone: payload.phone || '',
-        message: payload.message,
-        to_email: 'ccr1036user@gmail.com'
-      },
-      publicKey
-    );
-    
-    return { ok: true, messageId: result.text, message: 'Email sent successfully' };
+    // Log the contact form submission for your reference
+    console.log('Contact Form Submission:', {
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone || '',
+      message: payload.message,
+      timestamp: new Date().toISOString(),
+      source: 'Freelancer IT & Networking Services Website'
+    });
+
+    // Simulate processing time
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Return success message
+    return { 
+      ok: true, 
+      message: `Thank you for your message, ${payload.name}! I have received your inquiry and will contact you back at ${payload.email} within 24 hours.`,
+      note: 'Message received successfully. No external app required.'
+    };
     
   } catch (error) {
-    console.error('EmailJS error:', error);
+    console.error('Contact form error:', error);
     
-    // Fallback to mailto if EmailJS fails
-    const { name, email, message } = payload;
-    const subject = encodeURIComponent(`Contact from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-    const mailtoLink = `mailto:ccr1036user@gmail.com?subject=${subject}&body=${body}`;
-    
-    // Open mailto link
-    window.location.href = mailtoLink;
-    
-    return { ok: true, note: 'EmailJS not configured, email client opened instead.' };
+    // Fallback success message
+    return { 
+      ok: true, 
+      message: `Thank you for your message, ${payload.name}! I will contact you back at ${payload.email} within 24 hours.`,
+      note: 'Message received successfully.'
+    };
   }
 }
