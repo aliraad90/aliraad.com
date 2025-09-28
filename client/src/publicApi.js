@@ -1,6 +1,6 @@
 const API = import.meta.env.DEV 
   ? '/api/public' 
-  : '/.netlify/functions'; // Use Netlify functions for production
+  : 'https://api.amplifyapp.com'; // Use Amplify backend for production
 
 export async function getPlans() {
   const res = await fetch(`${API}/plans`);
@@ -30,31 +30,34 @@ export async function sendContact(payload) {
     return res.json();
   }
 
-  // For production, create a better user experience
-  const { name, email, message } = payload;
-  
-  // Show user-friendly message first
-  const userMessage = `Thank you for your message, ${name}! 
-  
-Your message has been prepared. Please choose how you'd like to send it:
-
-1. Click "Open Email" to open your email client
-2. Or copy the message below and send it manually to: ccr1036user@gmail.com
-
-Your Message:
-From: ${name} (${email})
-Message: ${message}`;
-
-  // Show the message to the user
-  alert(userMessage);
-  
-  // Then open the email client
-  const subject = encodeURIComponent(`Contact from ${name}`);
-  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-  const mailtoLink = `mailto:ccr1036user@gmail.com?subject=${subject}&body=${body}`;
-  
-  // Open mailto link
-  window.location.href = mailtoLink;
-  
-  return { ok: true, note: 'Email client opened with your message ready to send.' };
+  // For production, use Amplify backend API
+  try {
+    const res = await fetch(`${API}/contactForm`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload || {}),
+    });
+    
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || 'Failed to send message');
+    }
+    
+    const result = await res.json();
+    return { ok: true, message: result.message || 'Email sent successfully' };
+    
+  } catch (error) {
+    console.error('API error:', error);
+    
+    // Fallback to mailto if API fails
+    const { name, email, message } = payload;
+    const subject = encodeURIComponent(`Contact from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    const mailtoLink = `mailto:ccr1036user@gmail.com?subject=${subject}&body=${body}`;
+    
+    // Open mailto link
+    window.location.href = mailtoLink;
+    
+    return { ok: true, note: 'API unavailable, email client opened instead.' };
+  }
 }

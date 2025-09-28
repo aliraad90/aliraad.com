@@ -1,0 +1,11 @@
+# Amplify Backend Configuration
+version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - echo "Building backend for Amplify"
+        - npm ci
+    deploy:
+      commands:
+        - echo "Deploying backend to Amplify"

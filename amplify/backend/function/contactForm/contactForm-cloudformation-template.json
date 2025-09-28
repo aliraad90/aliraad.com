@@ -1,0 +1,134 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Contact form Lambda function",
+  "Parameters": {
+    "env": {
+      "Type": "String"
+    }
+  },
+  "Conditions": {},
+  "Resources": {
+    "LambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Metadata": {
+        "aws:asset:path": "./src",
+        "aws:asset:property": "Code"
+      },
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "DeploymentBucket"
+          },
+          "S3Key": {
+            "Ref": "S3Key"
+          }
+        },
+        "Handler": "index.handler",
+        "FunctionName": {
+          "Fn::If": [
+            "ShouldNotCreateEnvResources",
+            "contactForm",
+            {
+              "Fn::Sub": [
+                "contactForm${env}",
+                {
+                  "env": {
+                    "Ref": "env"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "ENV": {
+              "Ref": "env"
+            },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
+            "SMTP_HOST": "smtp.gmail.com",
+            "SMTP_PORT": "587",
+            "SMTP_SECURE": "false",
+            "SMTP_USER": "ccr1036user@gmail.com",
+            "SMTP_PASS": "lrlujohozskfaeek",
+            "FROM_EMAIL": "ccr1036user@gmail.com",
+            "TO_EMAIL": "ccr1036user@gmail.com"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs18.x",
+        "Layers": [],
+        "Timeout": 25
+      }
+    },
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::If": [
+            "ShouldNotCreateEnvResources",
+            "contactFormLambdaRole",
+            {
+              "Fn::Sub": [
+                "contactFormLambdaRole${env}",
+                {
+                  "env": {
+                    "Ref": "env"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "Name": {
+      "Value": {
+        "Ref": "LambdaFunction"
+      }
+    },
+    "Arn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaFunction",
+          "Arn"
+        ]
+      }
+    },
+    "Region": {
+      "Value": {
+        "Ref": "AWS::Region"
+      }
+    },
+    "LambdaExecutionRole": {
+      "Value": {
+        "Ref": "LambdaExecutionRole"
+      }
+    }
+  }
+}
