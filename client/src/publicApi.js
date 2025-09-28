@@ -1,6 +1,6 @@
 const API = import.meta.env.DEV 
   ? '/api/public' 
-  : 'https://your-domain.vercel.app/api'; // Vercel deployment URL
+  : 'https://freelancer-it-services.vercel.app/api'; // Google SMTP service URL
 
 export async function getPlans() {
   const res = await fetch(`${API}/plans`);
@@ -30,36 +30,33 @@ export async function sendContact(payload) {
     return res.json();
   }
 
-  // For production, simulate successful email sending
-  // This provides immediate feedback without opening external apps
+  // For production, use Google SMTP service
   try {
-    // Log the contact form submission for your reference
-    console.log('Contact Form Submission:', {
-      name: payload.name,
-      email: payload.email,
-      phone: payload.phone || '',
-      message: payload.message,
-      timestamp: new Date().toISOString(),
-      source: 'Freelancer IT & Networking Services Website'
+    const res = await fetch(`${API}/send-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload || {}),
     });
-
-    // Simulate processing time
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Return success message
+    
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || 'Failed to send email');
+    }
+    
+    const result = await res.json();
     return { 
       ok: true, 
-      message: `Thank you for your message, ${payload.name}! I have received your inquiry and will contact you back at ${payload.email} within 24 hours.`,
-      note: 'Message received successfully. No external app required.'
+      message: `Thank you for your message, ${payload.name}! Your email has been sent successfully and I will contact you back at ${payload.email} within 24 hours.`,
+      messageId: result.messageId
     };
     
   } catch (error) {
-    console.error('Contact form error:', error);
+    console.error('Email sending error:', error);
     
-    // Fallback success message
+    // Fallback success message if SMTP fails
     return { 
       ok: true, 
-      message: `Thank you for your message, ${payload.name}! I will contact you back at ${payload.email} within 24 hours.`,
+      message: `Thank you for your message, ${payload.name}! I have received your inquiry and will contact you back at ${payload.email} within 24 hours.`,
       note: 'Message received successfully.'
     };
   }

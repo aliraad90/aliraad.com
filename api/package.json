@@ -1,0 +1,12 @@
+{
+  "name": "freelancer-email-api",
+  "version": "1.0.0",
+  "description": "Google SMTP email service for contact form",
+  "main": "send-email.js",
+  "dependencies": {
+    "nodemailer": "^6.9.13"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
