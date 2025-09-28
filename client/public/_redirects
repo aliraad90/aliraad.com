@@ -1,2 +1,11 @@
 # Netlify redirects file (also works for Amplify)
+# Handle all SPA routes
 /*    /index.html   200
+
+# Specific routes for better performance
+/contact    /index.html   200
+/services   /index.html   200
+/portfolio  /index.html   200
+/certifications /index.html   200
+/pricing    /index.html   200
+/login      /index.html   200

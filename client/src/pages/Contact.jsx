@@ -23,13 +23,17 @@ export default function Contact() {
 
   async function submit(e) {
     e.preventDefault();
-    setStatus('Sending...');
+    setStatus('Preparing your message...');
     try {
-      await sendContact({ name, phone, email, message });
-      setStatus('Thanks! We will contact you shortly.');
-      setName(''); setPhone(''); setEmail(''); setMessage('');
+      const result = await sendContact({ name, phone, email, message });
+      if (result.note) {
+        setStatus(result.note);
+      } else {
+        setStatus('Thanks! Your message has been sent successfully.');
+        setName(''); setPhone(''); setEmail(''); setMessage('');
+      }
     } catch (e) {
-      setStatus(e.message);
+      setStatus(`Error: ${e.message}`);
     }
   }
 
