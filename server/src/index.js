@@ -107,10 +107,15 @@ async function start() {
   return server;
 }
 
-start().catch((e) => {
-  console.error('Failed to start server:', e);
-  process.exit(1);
-});
+// Only start server if not running in serverless environment
+if (process.env.NODE_ENV !== 'production' || !process.env.AWS_LAMBDA_FUNCTION_NAME) {
+  start().catch((e) => {
+    console.error('Failed to start server:', e);
+    process.exit(1);
+  });
+}
+
+export default app;
 
 // 404 handler (after routes)
 app.use((req, res, next) => {
