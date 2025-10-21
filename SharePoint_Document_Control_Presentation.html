@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharePoint Document Control System - Iraq Power Plants</title>
+    <style>
+        /* Siemens Energy Brand Colors */
+        :root {
+            --siemens-purple: #5E2584;
+            --siemens-blue: #0097A9;
+            --siemens-light-grey: #F3F3F3;
+            --siemens-dark-grey: #333333;
+            --siemens-white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--siemens-purple), var(--siemens-blue));
+            color: var(--siemens-dark-grey);
+            overflow-x: hidden;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            page-break-after: always;
+        }
+
+        .slide-content {
+            background: var(--siemens-white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 1200px;
+            min-height: 80vh;
+            position: relative;
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--siemens-purple);
+            padding-bottom: 20px;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            color: var(--siemens-purple);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: var(--siemens-blue);
+            font-weight: 300;
+        }
+
+        /* Main Diagram Styles */
+        .main-hub {
+            background: var(--siemens-purple);
+            color: var(--siemens-white);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px auto;
+            width: 80%;
+            position: relative;
+        }
+
+        .main-hub::before {
+            content: "☁️";
+            font-size: 2rem;
+            position: absolute;
+            top: -10px;
+            right: 20px;
+        }
+
+        .plants-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            gap: 20px;
+        }
+
+        .plant-box {
+            background: var(--siemens-blue);
+            color: var(--siemens-white);
+            padding: 20px;
+            border-radius: 15px;
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .plant-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .document-categories {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .category-item {
+            background: var(--siemens-light-grey);
+            color: var(--siemens-dark-grey);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .category-item::before {
+            content: "📄";
+            margin-right: 5px;
+        }
+
+        /* Workflow Diagram */
+        .workflow-container {
+            margin-top: 40px;
+            padding: 20px;
+            background: var(--siemens-light-grey);
+            border-radius: 15px;
+        }
+
+        .workflow-title {
+            text-align: center;
+            color: var(--siemens-purple);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .workflow-step {
+            background: var(--siemens-white);
+            border: 2px solid var(--siemens-blue);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .workflow-step::after {
+            content: "→";
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: var(--siemens-blue);
+        }
+
+        .workflow-step:last-child::after {
+            display: none;
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* KPI Dashboard */
+        .kpi-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--siemens-light-grey);
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+        }
+
+        .kpi-title {
+            color: var(--siemens-purple);
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .kpi-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        /* Benefits List */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .benefit-item {
+            background: var(--siemens-light-grey);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--siemens-blue);
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .benefit-title {
+            color: var(--siemens-purple);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Implementation Steps */
+        .implementation-steps {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, var(--siemens-blue), var(--siemens-purple));
+            color: var(--siemens-white);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .step-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Navigation */
+        .slide-nav {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: var(--siemens-purple);
+            color: var(--siemens-white);
+            border: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .nav-btn:hover {
+            background: var(--siemens-blue);
+        }
+
+        /* Print Styles */
+        @media print {
+            .slide {
+                page-break-after: always;
+            }
+            .slide-nav {
+                display: none;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .plants-container {
+                flex-direction: column;
+            }
+            
+            .workflow-steps {
+                flex-direction: column;
+            }
+            
+            .workflow-step::after {
+                content: "↓";
+                right: 50%;
+                bottom: -25px;
+                top: auto;
+                transform: translateX(50%);
+            }
+            
+            .benefits-grid,
+            .implementation-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide 1: Title Slide -->
+    <div class="slide" id="slide1">
+        <div class="slide-content">
+            <div class="slide-header">
+                <h1 class="slide-title">SharePoint Document Control System</h1>
+                <p class="slide-subtitle">Iraq Power Plants - Kharblaa, Najaf & Al-Kharkh</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 60px;">
+                <div style="font-size: 4rem; margin-bottom: 30px;">🏭⚡📊</div>
+                <h2 style="color: var(--siemens-blue); margin-bottom: 20px;">Centralized Document Management Solution</h2>
+                <p style="font-size: 1.2rem; color: var(--siemens-dark-grey);">
+                    Streamlined document control, automated workflows, and secure access management<br>
+                    for three power generation facilities
+                </p>
+                
+                <div style="margin-top: 40px; padding: 20px; background: var(--siemens-light-grey); border-radius: 10px;">
+                    <p><strong>Prepared by:</strong> Senior Document Controller</p>
+                    <p><strong>Date:</strong> October 2025</p>
+                    <p><strong>For:</strong> Management Review</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: System Architecture -->
+    <div class="slide" id="slide2">
+        <div class="slide-content">
+            <div class="slide-header">
+                <h1 class="slide-title">System Architecture Overview</h1>
+                <p class="slide-subtitle">SharePoint Hub Structure</p>
+            </div>
+
+            <div class="kpi-container">
+                <div class="kpi-title">📊 Dashboard KPIs</div>
+                <div class="kpi-item">
+                    <span>Pending Approvals:</span>
+                    <span><strong>12</strong></span>
+                </div>
+                <div class="kpi-item">
+                    <span>Approved This Month:</span>
+                    <span><strong>45</strong></span>
+                </div>
+                <div class="kpi-item">
+                    <span>Recent Uploads:</span>
+                    <span><strong>8</strong></span>
+                </div>
+                <div class="kpi-item">
+                    <span>Total Documents:</span>
+                    <span><strong>1,247</strong></span>
+                </div>
+            </div>
+
+            <div class="main-hub">
+                <h2>📂 Main SharePoint Hub</h2>
+                <p>"Iraq Power Plants – Document Control"</p>
+                <p style="font-size: 0.9rem; margin-top: 10px;">Centralized access point with search, KPI dashboard, and quick navigation</p>
+            </div>
+
+            <div class="plants-container">
+                <div class="plant-box">
+                    <div class="plant-title">🏭 Kharblaa Power Plant</div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">Document Library</p>
+                    <div class="document-categories">
+                        <div class="category-item">Engineering Documents</div>
+                        <div class="category-item">QA/QC Reports</div>
+                        <div class="category-item">Operations Manuals</div>
+                        <div class="category-item">Contracts</div>
+                        <div class="category-item">Maintenance Records</div>
+                    </div>
+                </div>
+
+                <div class="plant-box">
+                    <div class="plant-title">🏭 Najaf Power Plant</div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">Document Library</p>
+                    <div class="document-categories">
+                        <div class="category-item">Engineering Documents</div>
+                        <div class="category-item">QA/QC Reports</div>
+                        <div class="category-item">Operations Manuals</div>
+                        <div class="category-item">Contracts</div>
+                        <div class="category-item">Maintenance Records</div>
+                    </div>
+                </div>
+
+                <div class="plant-box">
+                    <div class="plant-title">🏭 Al-Kharkh Power Plant</div>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px;">Document Library</p>
+                    <div class="document-categories">
+                        <div class="category-item">Engineering Documents</div>
+                        <div class="category-item">QA/QC Reports</div>
+                        <div class="category-item">Operations Manuals</div>
+                        <div class="category-item">Contracts</div>
+                        <div class="category-item">Maintenance Records</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-container">
+                <div class="workflow-title">🔄 Automated Approval Workflow</div>
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <span class="step-icon">🧑‍💼</span>
+                        <div><strong>Plant Manager Review</strong></div>
+                        <div style="font-size: 0.8rem;">Document sent for approval</div>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="step-icon">✅</span>
+                        <div><strong>Status Updated</strong></div>
+                        <div style="font-size: 0.8rem;">Approved status applied</div>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="step-icon">📦</span>
+                        <div><strong>Archive Old Versions</strong></div>
+                        <div style="font-size: 0.8rem;">Previous versions archived</div>
+                    </div>
+                    <div class="workflow-step">
+                        <span class="step-icon">📩</span>
+                        <div><strong>Notify Stakeholders</strong></div>
+                        <div style="font-size: 0.8rem;">Email notifications sent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Key Benefits -->
+    <div class="slide" id="slide3">
+        <div class="slide-content">
+            <div class="slide-header">
+                <h1 class="slide-title">Key Business Benefits</h1>
+                <p class="slide-subtitle">Why This System Delivers Value</p>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">⏱️</div>
+                    <div class="benefit-title">Time Efficiency</div>
+                    <p>Reduce document search time from hours to seconds with centralized search and standardized filing across all three plants.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <div class="benefit-title">Enhanced Security</div>
+                    <p>Role-based access control ensures only authorized personnel can view, edit, or approve sensitive plant documentation.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">📋</div>
+                    <div class="benefit-title">Compliance Assurance</div>
+                    <p>Automated audit trails and version control ensure compliance with ISO 9001 and contractual documentation requirements.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔄</div>
+                    <div class="benefit-title">Process Automation</div>
+                    <p>Eliminate manual approval routing with automated workflows that notify stakeholders and track document status in real-time.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">📊</div>
+                    <div class="benefit-title">Real-time Visibility</div>
+                    <p>Management dashboard provides instant visibility into pending approvals, document status, and compliance metrics across all plants.</p>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="benefit-icon">🌐</div>
+                    <div class="benefit-title">Scalability</div>
+                    <p>System architecture supports easy addition of new power plants or document categories without restructuring existing workflows.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; padding: 20px; background: linear-gradient(135deg, var(--siemens-purple), var(--siemens-blue)); color: white; border-radius: 15px; text-align: center;">
+                <h3 style="margin-bottom: 15px;">💰 Expected ROI</h3>
+                <div style="display: flex; justify-content: space-around;">
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">75%</div>
+                        <div style="font-size: 0.9rem;">Reduction in document search time</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">90%</div>
+                        <div style="font-size: 0.9rem;">Faster approval processes</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">100%</div>
+                        <div style="font-size: 0.9rem;">Audit trail compliance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Technical Features -->
+    <div class="slide" id="slide4">
+        <div class="slide-content">
+            <div class="slide-header">
+                <h1 class="slide-title">Technical Features & Capabilities</h1>
+                <p class="slide-subtitle">SharePoint & Power Platform Integration</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+                <div>
+                    <h3 style="color: var(--siemens-purple); margin-bottom: 20px;">📚 Document Management</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 10px 0; padding: 10px; background: var(--siemens-light-grey); border-radius: 5px;">
+                            <strong>📄 Version Control:</strong> Automatic versioning with change tracking
+                        </li>
+                        <li style="margin: 10px 0; padding: 10px; background: var(--siemens-light-grey); border-radius: 5px;">
+                            <strong>🏷️ Metadata Tagging:</strong> Plant name, document type, revision, status
+                        </li>
+                        <li style="margin: 10px 0; padding: 10px; background: var(--siemens-light-grey); border-radius: 5px;">
+                            <strong>🔍 Advanced Search:</strong> Full-text search across all plants
+                        </li>
+                        <li style="margin: 10px 0; padding: 10px; background: var(--siemens-light-grey); border-radius: 5px;">
+                            <strong>📱 Mobile Access:</strong> SharePoint mobile app compatibility
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 style="color: var(--siemens-blue); margin-bottom: 20px;">⚙️ Automation Features</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 10px 0; padding: 10px; background: var(--siemens-light-grey); border-radius: 5px;">
+                            <strong>🔄 Power Automate:</strong> Custom approval workflows
+                        </li>
+                        <li style="margin: 10px 0; padding: 10px; background: var(--siemens-light-grey); border-radius: 5px;">
+                            <strong>📧 Email Notifications:</strong> Automated stakeholder alerts
+                        </li>
+                        <li style="margin: 10px 0; padding: 10px; background: var(--siemens-light-grey); border-radius: 5px;">
+                            <strong>📊 Power BI Integration:</strong> Real-time analytics dashboard
+                        </li>
+                        <li style="margin: 10px 0; padding: 10px; background: var(--siemens-light-grey); border-radius: 5px;">
+                            <strong>🗂️ Auto-Archiving:</strong> Scheduled cleanup of old versions
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3 style="color: var(--siemens-purple); margin-bottom: 20px; text-align: center;">🔐 Security & Permissions Matrix</h3>
+                <table style="width: 100%; border-collapse: collapse; background: var(--siemens-white); border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <thead style="background: var(--siemens-purple); color: white;">
+                        <tr>
+                            <th style="padding: 15px; text-align: left;">User Role</th>
+                            <th style="padding: 15px; text-align: center;">View</th>
+                            <th style="padding: 15px; text-align: center;">Upload</th>
+                            <th style="padding: 15px; text-align: center;">Edit</th>
+                            <th style="padding: 15px; text-align: center;">Approve</th>
+                            <th style="padding: 15px; text-align: center;">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--siemens-light-grey);">
+                            <td style="padding: 12px; font-weight: bold;">Document Controller (You)</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--siemens-light-grey);">
+                            <td style="padding: 12px; font-weight: bold;">Plant Manager</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">❌</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--siemens-light-grey);">
+                            <td style="padding: 12px; font-weight: bold;">Plant Engineer</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">❌</td>
+                            <td style="padding: 12px; text-align: center;">❌</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; font-weight: bold;">Operations Staff</td>
+                            <td style="padding: 12px; text-align: center;">✅</td>
+                            <td style="padding: 12px; text-align: center;">❌</td>
+                            <td style="padding: 12px; text-align: center;">❌</td>
+                            <td style="padding: 12px; text-align: center;">❌</td>
+                            <td style="padding: 12px; text-align: center;">❌</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Implementation Plan -->
+    <div class="slide" id="slide5">
+        <div class="slide-content">
+            <div class="slide-header">
+                <h1 class="slide-title">Implementation Roadmap</h1>
+                <p class="slide-subtitle">3-Phase Deployment Strategy</p>
+            </div>
+
+            <div class="implementation-steps">
+                <div class="step-card">
+                    <div class="step-number">Phase 1</div>
+                    <h3 style="margin-bottom: 15px;">Foundation Setup</h3>
+                    <ul style="text-align: left; list-style: none; padding: 0;">
+                        <li style="margin: 8px 0;">✓ Create SharePoint site structure</li>
+                        <li style="margin: 8px 0;">✓ Configure document libraries</li>
+                        <li style="margin: 8px 0;">✓ Set up metadata columns</li>
+                        <li style="margin: 8px 0;">✓ Define user permissions</li>
+                    </ul>
+                    <div style="margin-top: 15px; font-weight: bold;">Timeline: 1-2 weeks</div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">Phase 2</div>
+                    <h3 style="margin-bottom: 15px;">Automation & Workflows</h3>
+                    <ul style="text-align: left; list-style: none; padding: 0;">
+                        <li style="margin: 8px 0;">✓ Build Power Automate workflows</li>
+                        <li style="margin: 8px 0;">✓ Configure approval processes</li>
+                        <li style="margin: 8px 0;">✓ Set up email notifications</li>
+                        <li style="margin: 8px 0;">✓ Create Power BI dashboard</li>
+                    </ul>
+                    <div style="margin-top: 15px; font-weight: bold;">Timeline: 2-3 weeks</div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">Phase 3</div>
+                    <h3 style="margin-bottom: 15px;">Migration & Training</h3>
+                    <ul style="text-align: left; list-style: none; padding: 0;">
+                        <li style="margin: 8px 0;">✓ Migrate existing documents</li>
+                        <li style="margin: 8px 0;">✓ Train plant staff</li>
+                        <li style="margin: 8px 0;">✓ Conduct user acceptance testing</li>
+                        <li style="margin: 8px 0;">✓ Go-live support</li>
+                    </ul>
+                    <div style="margin-top: 15px; font-weight: bold;">Timeline: 2-3 weeks</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div style="background: var(--siemens-light-grey); padding: 20px; border-radius: 15px;">
+                    <h3 style="color: var(--siemens-purple); margin-bottom: 15px;">📋 Prerequisites</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 8px 0;">✓ SharePoint Online license (existing)</li>
+                        <li style="margin: 8px 0;">✓ Power Platform license</li>
+                        <li style="margin: 8px 0;">✓ User accounts for all plant staff</li>
+                        <li style="margin: 8px 0;">✓ Document inventory from each plant</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--siemens-light-grey); padding: 20px; border-radius: 15px;">
+                    <h3 style="color: var(--siemens-blue); margin-bottom: 15px;">👥 Project Team</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 8px 0;"><strong>Project Lead:</strong> Senior Document Controller</li>
+                        <li style="margin: 8px 0;"><strong>IT Support:</strong> Siemens Energy IT</li>
+                        <li style="margin: 8px 0;"><strong>Plant Champions:</strong> 1 per plant</li>
+                        <li style="margin: 8px 0;"><strong>End Users:</strong> Plant staff (all levels)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, var(--siemens-blue), var(--siemens-purple)); color: white; border-radius: 15px; text-align: center;">
+                <h3 style="margin-bottom: 10px;">🎯 Success Metrics</h3>
+                <div style="display: flex; justify-content: space-around; margin-top: 15px;">
+                    <div>
+                        <div style="font-size: 1.2rem; font-weight: bold;">100%</div>
+                        <div style="font-size: 0.9rem;">Document migration</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.2rem; font-weight: bold;">&lt;24h</div>
+                        <div style="font-size: 0.9rem;">Approval cycle time</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.2rem; font-weight: bold;">95%</div>
+                        <div style="font-size: 0.9rem;">User adoption rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Next Steps -->
+    <div class="slide" id="slide6">
+        <div class="slide-content">
+            <div class="slide-header">
+                <h1 class="slide-title">Next Steps & Recommendations</h1>
+                <p class="slide-subtitle">Moving Forward with Implementation</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+                <div>
+                    <h3 style="color: var(--siemens-purple); margin-bottom: 20px;">🚀 Immediate Actions</h3>
+                    <div style="background: var(--siemens-light-grey); padding: 20px; border-radius: 15px;">
+                        <div style="margin: 15px 0; padding: 15px; background: white; border-radius: 10px; border-left: 5px solid var(--siemens-blue);">
+                            <strong>Week 1:</strong> Secure management approval and project charter
+                        </div>
+                        <div style="margin: 15px 0; padding: 15px; background: white; border-radius: 10px; border-left: 5px solid var(--siemens-blue);">
+                            <strong>Week 2:</strong> Conduct stakeholder meetings with plant managers
+                        </div>
+                        <div style="margin: 15px 0; padding: 15px; background: white; border-radius: 10px; border-left: 5px solid var(--siemens-blue);">
+                            <strong>Week 3:</strong> Begin SharePoint site creation and basic structure
+                        </div>
+                        <div style="margin: 15px 0; padding: 15px; background: white; border-radius: 10px; border-left: 5px solid var(--siemens-blue);">
+                            <strong>Week 4:</strong> Start pilot with one plant (recommend Kharblaa)
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="color: var(--siemens-blue); margin-bottom: 20px;">💰 Budget Considerations</h3>
+                    <div style="background: var(--siemens-light-grey); padding: 20px; border-radius: 15px;">
+                        <div style="margin: 10px 0; display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 5px;">
+                            <span>SharePoint Online (existing)</span>
+                            <span style="color: green; font-weight: bold;">$0</span>
+                        </div>
+                        <div style="margin: 10px 0; display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 5px;">
+                            <span>Power Platform licenses</span>
+                            <span style="color: var(--siemens-blue); font-weight: bold;">~$500/month</span>
+                        </div>
+                        <div style="margin: 10px 0; display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 5px;">
+                            <span>Training & Setup time</span>
+                            <span style="color: var(--siemens-blue); font-weight: bold;">40 hours</span>
+                        </div>
+                        <div style="margin: 10px 0; display: flex; justify-content: space-between; padding: 10px; background: white; border-radius: 5px;">
+                            <span><strong>Total Monthly Cost</strong></span>
+                            <span style="color: var(--siemens-purple); font-weight: bold; font-size: 1.2rem;">~$500</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3 style="color: var(--siemens-purple); margin-bottom: 20px; text-align: center;">📊 Risk Assessment & Mitigation</h3>
+                <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <thead style="background: var(--siemens-purple); color: white;">
+                        <tr>
+                            <th style="padding: 15px; text-align: left;">Risk</th>
+                            <th style="padding: 15px; text-align: center;">Probability</th>
+                            <th style="padding: 15px; text-align: left;">Mitigation Strategy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid var(--siemens-light-grey);">
+                            <td style="padding: 12px;">User resistance to change</td>
+                            <td style="padding: 12px; text-align: center; color: orange;">Medium</td>
+                            <td style="padding: 12px;">Comprehensive training + plant champions</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--siemens-light-grey);">
+                            <td style="padding: 12px;">Data migration complexity</td>
+                            <td style="padding: 12px; text-align: center; color: orange;">Medium</td>
+                            <td style="padding: 12px;">Phased approach + backup procedures</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px;">System performance issues</td>
+                            <td style="padding: 12px; text-align: center; color: green;">Low</td>
+                            <td style="padding: 12px;">SharePoint Online scalability + monitoring</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 40px; padding: 30px; background: linear-gradient(135deg, var(--siemens-purple), var(--siemens-blue)); color: white; border-radius: 20px; text-align: center;">
+                <h2 style="margin-bottom: 20px;">🎯 Management Decision Required</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">
+                    This SharePoint Document Control System will transform how we manage documentation across our three power plants, 
+                    delivering immediate efficiency gains and long-term compliance benefits.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 30px; margin-top: 20px;">
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5rem; font-weight: bold;">6-8 weeks</div>
+                        <div>Implementation timeline</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5rem; font-weight: bold;">$6,000</div>
+                        <div>Annual investment</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 1.5rem; font-weight: bold;">75%</div>
+                        <div>Efficiency improvement</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="slide-nav">
+        <button class="nav-btn" onclick="previousSlide()">← Previous</button>
+        <span id="slide-counter" style="color: white; margin: 0 10px;">1 / 6</span>
+        <button class="nav-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 6;
+
+        function showSlide(n) {
+            // Hide all slides
+            for (let i = 1; i <= totalSlides; i++) {
+                document.getElementById('slide' + i).style.display = 'none';
+            }
+            
+            // Show current slide
+            document.getElementById('slide' + n).style.display = 'flex';
+            
+            // Update counter
+            document.getElementById('slide-counter').textContent = n + ' / ' + totalSlides;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(1);
+
+        // Auto-advance slides (optional - remove if not wanted)
+        // setInterval(nextSlide, 30000); // Auto-advance every 30 seconds
+    </script>
+</body>
+</html>
