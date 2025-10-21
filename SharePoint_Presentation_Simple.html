@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharePoint Document Control System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .slide {
+            background: white;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            page-break-after: always;
+        }
+        
+        .slide h1 {
+            color: #5E2584;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #0097A9;
+            padding-bottom: 15px;
+        }
+        
+        .slide h2 {
+            color: #0097A9;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .slide h3 {
+            color: #5E2584;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .main-hub {
+            background: #5E2584;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .plants-row {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .plant-box {
+            flex: 1;
+            min-width: 280px;
+            background: #0097A9;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .plant-box h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .category {
+            background: rgba(255,255,255,0.2);
+            padding: 8px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .workflow {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .workflow-step {
+            flex: 1;
+            min-width: 150px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+        }
+        
+        .workflow-step h4 {
+            color: #5E2584;
+            margin-bottom: 10px;
+        }
+        
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .benefit-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #0097A9;
+        }
+        
+        .benefit-card h4 {
+            color: #5E2584;
+            margin-bottom: 10px;
+        }
+        
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .kpi-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .kpi-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0097A9;
+        }
+        
+        .kpi-label {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .timeline {
+            margin: 30px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .timeline-number {
+            background: #5E2584;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .table th {
+            background: #5E2584;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .highlight-box {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .cta-box {
+            background: #5E2584;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin: 5px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .plants-row, .workflow {
+                flex-direction: column;
+            }
+            .slide {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide">
+    <h1>SharePoint Document Control System</h1>
+    <h2 style="text-align: center; color: #0097A9;">Iraq Power Plants - Centralized Document Management</h2>
+    
+    <div class="main-hub">
+        <h2>🏭 Three Power Plants</h2>
+        <p style="font-size: 18px;">Kharblaa • Najaf • Al-Kharkh</p>
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px;">
+        <p><strong>Presented by:</strong> Senior Document Controller</p>
+        <p><strong>Company:</strong> Siemens Energy - Iraq Power Generation Projects</p>
+    </div>
+</div>
+
+<!-- Slide 2: System Architecture -->
+<div class="slide">
+    <h1>System Architecture Overview</h1>
+    
+    <div class="main-hub">
+        <h2>📁 Main SharePoint Hub</h2>
+        <p>"Iraq Power Plants – Document Control"</p>
+    </div>
+    
+    <div class="plants-row">
+        <div class="plant-box">
+            <h3>🏭 Kharblaa Power Plant</h3>
+            <div class="categories">
+                <div class="category">📋 Engineering</div>
+                <div class="category">✅ QA/QC</div>
+                <div class="category">📖 Operations</div>
+                <div class="category">📄 Contracts</div>
+                <div class="category">🔧 Maintenance</div>
+            </div>
+        </div>
+        
+        <div class="plant-box">
+            <h3>🏭 Najaf Power Plant</h3>
+            <div class="categories">
+                <div class="category">📋 Engineering</div>
+                <div class="category">✅ QA/QC</div>
+                <div class="category">📖 Operations</div>
+                <div class="category">📄 Contracts</div>
+                <div class="category">🔧 Maintenance</div>
+            </div>
+        </div>
+        
+        <div class="plant-box">
+            <h3>🏭 Al-Kharkh Power Plant</h3>
+            <div class="categories">
+                <div class="category">📋 Engineering</div>
+                <div class="category">✅ QA/QC</div>
+                <div class="category">📖 Operations</div>
+                <div class="category">📄 Contracts</div>
+                <div class="category">🔧 Maintenance</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Workflow -->
+<div class="slide">
+    <h1>Automated Workflow Process</h1>
+    <h2>📋 Power Automate Integration</h2>
+    
+    <div class="workflow">
+        <div class="workflow-step">
+            <div style="font-size: 24px; margin-bottom: 10px;">📤</div>
+            <h4>Document Upload</h4>
+            <p>User uploads document with metadata</p>
+        </div>
+        
+        <div class="workflow-step">
+            <div style="font-size: 24px; margin-bottom: 10px;">👨‍💼</div>
+            <h4>Manager Review</h4>
+            <p>Automatic routing to plant manager</p>
+        </div>
+        
+        <div class="workflow-step">
+            <div style="font-size: 24px; margin-bottom: 10px;">✅</div>
+            <h4>Status Update</h4>
+            <p>Document marked as approved</p>
+        </div>
+        
+        <div class="workflow-step">
+            <div style="font-size: 24px; margin-bottom: 10px;">📦</div>
+            <h4>Auto Archive</h4>
+            <p>Old versions moved to archive</p>
+        </div>
+        
+        <div class="workflow-step">
+            <div style="font-size: 24px; margin-bottom: 10px;">📧</div>
+            <h4>Notifications</h4>
+            <p>Stakeholders receive updates</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Metadata -->
+<div class="slide">
+    <h1>Document Metadata Structure</h1>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Type</th>
+                <th>Options/Format</th>
+                <th>Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Plant Name</strong></td>
+                <td>Dropdown</td>
+                <td>Kharblaa / Najaf / Al-Kharkh</td>
+                <td>Identify source plant</td>
+            </tr>
+            <tr>
+                <td><strong>Document Type</strong></td>
+                <td>Choice</td>
+                <td>Engineering / QA-QC / Operations / Contracts / Maintenance</td>
+                <td>Categorize document</td>
+            </tr>
+            <tr>
+                <td><strong>Revision Number</strong></td>
+                <td>Text</td>
+                <td>Rev 01, Rev 02, etc.</td>
+                <td>Version control</td>
+            </tr>
+            <tr>
+                <td><strong>Status</strong></td>
+                <td>Choice</td>
+                <td>Draft / Under Review / Approved / Archived</td>
+                <td>Track approval status</td>
+            </tr>
+            <tr>
+                <td><strong>Owner</strong></td>
+                <td>Person</td>
+                <td>SharePoint user</td>
+                <td>Responsible person</td>
+            </tr>
+            <tr>
+                <td><strong>Date Issued</strong></td>
+                <td>Date</td>
+                <td>DD/MM/YYYY</td>
+                <td>Track creation date</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Slide 5: KPI Dashboard -->
+<div class="slide">
+    <h1>Management Dashboard & KPIs</h1>
+    
+    <div class="highlight-box">
+        <h3 style="color: #5E2584;">📊 Real-time Document Control Metrics</h3>
+    </div>
+    
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-number">247</div>
+            <div class="kpi-label">Total Documents</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-number">15</div>
+            <div class="kpi-label">Pending Approvals</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-number">32</div>
+            <div class="kpi-label">Approved This Month</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-number">98%</div>
+            <div class="kpi-label">Compliance Rate</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-number">5.2</div>
+            <div class="kpi-label">Avg. Approval Days</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-number">156</div>
+            <div class="kpi-label">Archived Documents</div>
+        </div>
+    </div>
+    
+    <h3>📈 Power BI Integration Features:</h3>
+    <ul>
+        <li>Real-time document status tracking across all three plants</li>
+        <li>Approval bottleneck identification and resolution</li>
+        <li>Compliance reporting for audit purposes</li>
+        <li>Document lifecycle analytics and trends</li>
+        <li>Plant-specific performance comparisons</li>
+    </ul>
+</div>
+
+<!-- Slide 6: Security -->
+<div class="slide">
+    <h1>Security & Access Control</h1>
+    
+    <div class="benefits">
+        <div class="benefit-card">
+            <h4>🔐 Role-Based Access</h4>
+            <ul>
+                <li><strong>Site Owners:</strong> Full control (Document Controllers + Management)</li>
+                <li><strong>Plant Engineers:</strong> Edit access to their plant's documents</li>
+                <li><strong>Reviewers:</strong> Approval rights for specific document types</li>
+                <li><strong>Viewers:</strong> Read-only access to approved documents</li>
+            </ul>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>📋 Audit Trail</h4>
+            <ul>
+                <li>Complete version history tracking</li>
+                <li>User activity logs and timestamps</li>
+                <li>Document access and download records</li>
+                <li>Approval workflow history</li>
+            </ul>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>🛡️ Data Protection</h4>
+            <ul>
+                <li>SharePoint enterprise-grade security</li>
+                <li>Automatic backup and recovery</li>
+                <li>Compliance with Siemens Energy policies</li>
+                <li>Encrypted data transmission and storage</li>
+            </ul>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>🔍 Advanced Search</h4>
+            <ul>
+                <li>Global search across all plants</li>
+                <li>Metadata-based filtering</li>
+                <li>Full-text content search</li>
+                <li>Saved search queries and alerts</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Implementation -->
+<div class="slide">
+    <h1>Implementation Roadmap</h1>
+    <h2>📅 Phased Implementation Approach</h2>
+    
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-number">1</div>
+            <div>
+                <h4>Phase 1: Foundation Setup (Week 1-2)</h4>
+                <p>Create main SharePoint site, configure basic structure, set up document libraries for each plant</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-number">2</div>
+            <div>
+                <h4>Phase 2: Metadata & Permissions (Week 3)</h4>
+                <p>Configure metadata columns, set up user groups and permissions, create custom views</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-number">3</div>
+            <div>
+                <h4>Phase 3: Workflow Automation (Week 4-5)</h4>
+                <p>Implement Power Automate workflows for approval processes, notifications, and archiving</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-number">4</div>
+            <div>
+                <h4>Phase 4: Dashboard & Reporting (Week 6)</h4>
+                <p>Set up Power BI dashboard, configure KPI tracking, create management reports</p>
+            </div>
+        </div>
+        
+        <div class="timeline-item">
+            <div class="timeline-number">5</div>
+            <div>
+                <h4>Phase 5: Testing & Training (Week 7-8)</h4>
+                <p>User acceptance testing, staff training sessions, documentation and go-live support</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: Benefits -->
+<div class="slide">
+    <h1>Business Benefits & ROI</h1>
+    
+    <div class="benefits">
+        <div class="benefit-card">
+            <h4>⏱️ Time Savings</h4>
+            <p><strong>75% reduction</strong> in document search time through centralized storage and advanced search capabilities</p>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>🎯 Improved Accuracy</h4>
+            <p><strong>90% reduction</strong> in errors from outdated documents through automated version control</p>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>📈 Enhanced Compliance</h4>
+            <p><strong>100% audit trail</strong> for all document activities, ensuring regulatory compliance</p>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>🤝 Better Collaboration</h4>
+            <p><strong>Real-time collaboration</strong> across all three plants with consistent processes</p>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>💰 Cost Reduction</h4>
+            <p><strong>60% reduction</strong> in administrative overhead through automation</p>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>🔄 Scalability</h4>
+            <p><strong>Easy expansion</strong> to additional plants or projects with proven framework</p>
+        </div>
+    </div>
+    
+    <div class="highlight-box">
+        <h3 style="color: #5E2584;">💡 Expected ROI: 300% within 12 months</h3>
+        <p>Through reduced administrative costs, improved efficiency, and enhanced compliance</p>
+    </div>
+</div>
+
+<!-- Slide 9: Next Steps -->
+<div class="slide">
+    <h1>Next Steps & Recommendations</h1>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
+        <div>
+            <h3>🚀 Immediate Actions</h3>
+            <div class="timeline-item">
+                <div class="timeline-number">1</div>
+                <div>
+                    <h4>Management Approval</h4>
+                    <p>Secure management buy-in and budget allocation</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">2</div>
+                <div>
+                    <h4>IT Coordination</h4>
+                    <p>Coordinate with IT for SharePoint site creation and permissions</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">3</div>
+                <div>
+                    <h4>Stakeholder Engagement</h4>
+                    <p>Identify key users from each plant for requirements gathering</p>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <h3>📋 Success Criteria</h3>
+            <ul style="font-size: 16px; line-height: 1.8;">
+                <li>✅ All three plants using the system within 8 weeks</li>
+                <li>✅ 95% user adoption rate within 3 months</li>
+                <li>✅ 50% reduction in document approval time</li>
+                <li>✅ Zero compliance issues in first audit</li>
+                <li>✅ Positive user feedback (>4.0/5.0 rating)</li>
+                <li>✅ System uptime >99.5%</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="cta-box">
+        <h3>🎯 Ready to Transform Document Management?</h3>
+        <p>Let's implement this SharePoint solution and revolutionize how we manage documents across Kharblaa, Najaf, and Al-Kharkh power plants.</p>
+    </div>
+</div>
+
+<!-- Slide 10: Questions -->
+<div class="slide">
+    <h1>Questions & Discussion</h1>
+    
+    <div class="highlight-box">
+        <h2 style="color: #5E2584;">Thank You</h2>
+        <p style="font-size: 18px;">SharePoint Document Control System for Iraq Power Plants</p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
+        <div class="benefit-card">
+            <h4>📧 Contact</h4>
+            <p>Senior Document Controller</p>
+            <p>Siemens Energy</p>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>🏭 Scope</h4>
+            <p>Kharblaa Power Plant</p>
+            <p>Najaf Power Plant</p>
+            <p>Al-Kharkh Power Plant</p>
+        </div>
+        
+        <div class="benefit-card">
+            <h4>⏱️ Timeline</h4>
+            <p>8-week implementation</p>
+            <p>Phased rollout approach</p>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 40px;">
+        <h3 style="color: #0097A9;">Questions & Discussion</h3>
+        <p style="font-size: 18px;">Ready to discuss implementation details, budget requirements, or technical specifications?</p>
+    </div>
+</div>
+
+</body>
+</html>
